@@ -228,7 +228,10 @@ class LoadBalancers(object):
       lb.status()
     
   def __getitem__(self, k):
-    return self.lbs[k]
+    if isinstance(k, str) or isinstance(k, unicode):
+      return [lb for lb in self.lbs if lb.lb.name == k].pop()
+    else:
+      return self.lbs[k]
     
   def __repr__(self):
     return 'LoadBalancers:' + ",".join([lb.name for lb in self.lbs])
