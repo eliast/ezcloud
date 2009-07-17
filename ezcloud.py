@@ -199,10 +199,15 @@ class LoadBalancer(object):
     print "Load Balancer: ", self.lb.name       
     if not outofservice:
       print "Everything is OK."
+      return self.parent.parent.instance_list([])
     else: 
       print "%d instances out of service." % (len(outofservice),)
       for obj, health in outofservice:
+        # for now print error and return instance list
+        # would be good to pass extra data to InstanceList for printing
+        # once
         print obj.public_dns_name, health.description
+        return self.parent.parent.instance_list([x for x,y in outofservice])
         
   def metrics(self):
     if not self._metrics:
